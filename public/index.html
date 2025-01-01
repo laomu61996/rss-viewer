@@ -19,11 +19,16 @@
             align-items: center;
             transition: background 0.5s ease-in-out;
             background-attachment: fixed; /* 背景固定 */
+            box-sizing: border-box; /* 让所有元素的边距和内边距都包含在内 */
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         .container {
-            max-width: 800px;
             width: 100%;
+            max-width: 800px;
             background: rgba(255, 255, 255, 0.8); /* 半透明背景 */
             padding: 20px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -35,13 +40,13 @@
         h1 {
             text-align: center;
             color: #333;
+            margin-bottom: 20px;
         }
 
         .feed-item {
             margin-bottom: 20px;
             border-bottom: 1px solid #ddd;
-            padding-bottom: 10px;
-            padding-top: 10px; /* 上下留空 */
+            padding: 10px 0; /* 上下留空 */
         }
 
         .feed-item:last-child {
