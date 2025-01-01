@@ -28,10 +28,13 @@
         .rss-item:last-child {
             border-bottom: none;
         }
-        .rss-item img {
-            max-width: 100%;
-            height: auto;
-            margin-top: 10px;
+        .rss-item h2 {
+            font-size: 1.2em;
+            margin: 0;
+            color: #007bff;
+        }
+        .rss-item p {
+            margin: 10px 0;
         }
         .rss-item a {
             color: #007bff;
@@ -39,6 +42,25 @@
         }
         .rss-item a:hover {
             text-decoration: underline;
+        }
+        .rss-item img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+        }
+        .rss-item .price {
+            font-size: 1.1em;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .rss-item .store {
+            font-style: italic;
+        }
+        .rss-item .value-rate {
+            font-weight: bold;
+        }
+        .rss-item .link-container {
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -60,12 +82,19 @@
                     data.items.forEach(item => {
                         const div = document.createElement("div");
                         div.className = "rss-item";
-                        
-                        // 提取并显示description中的内容
+
+                        // 将 description 中的 HTML 格式化并展示
                         div.innerHTML = `
-                            <h2>${item.description}</h2>
-                            <p><a href="${item.link}" target="_blank">阅读全文</a></p>
-                            ${item.image ? `<img src="${item.image}" width="250" />` : ''}
+                            <h2>${item.title}</h2>
+                            <div class="description">${item.description}</div>
+                            <p class="price">价格：${item.price}</p>
+                            <p class="store">商家：${item.store}</p>
+                            <p class="value-rate">值率：值: ${item.value_rate.value} 不值: ${item.value_rate.not_value}</p>
+                            <div class="link-container">
+                                <p><a href="${item.link}" target="_blank">查看详情</a></p>
+                                <p><a href="${item.purchase_link}" target="_blank">购买链接</a></p>
+                            </div>
+                            ${item.image ? `<img src="${item.image}" width="250" height="250" />` : ''}
                         `;
                         container.appendChild(div);
                     });
