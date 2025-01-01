@@ -3,139 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RSS Feed Viewer</title>
+    <title>RSS Reader</title>
     <style>
-        /* 基本样式 */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-            height: 100vh;
-            background-attachment: fixed; /* 背景固定 */
-            box-sizing: border-box; /* 让所有元素的边距和内边距都包含在内 */
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 900px; /* 容器最大宽度 */
-            margin: 20px auto; /* 垂直留空 */
-            background: rgba(255, 255, 255, 0.9); /* 半透明背景 */
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
-
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        .feed-item {
-            margin-bottom: 30px; /* 增加底部间距 */
-            border-bottom: 1px solid #ddd;
-            padding: 15px 0; /* 上下内边距增加 */
-        }
-
-        .feed-item:last-child {
-            border-bottom: none;
-        }
-
-        .feed-item .description {
-            margin: 0;
-            font-size: 1.2em; /* 增大标题字体 */
-            color: #333;
-            font-weight: bold;
-        }
-
-        .feed-item .description a {
-            text-decoration: none;
-            color: #0073e6;
-        }
-
-        .feed-item .description a:hover {
-            text-decoration: underline;
-        }
-
-        .feed-item p {
-            margin: 10px 0;
-            line-height: 1.6; /* 增加行间距 */
-            color: #555;
-        }
-
-        .feed-item time {
-            font-size: 0.9em;
-            color: #999;
-            display: block;
+        .rss-item {
+            border: 1px solid #ddd;
+            padding: 10px;
             margin-bottom: 10px;
         }
-
-        /* 图片样式 */
-        .feed-item img {
-            max-width: 100%; /* 图片自适应容器宽度 */
+        .rss-item img {
+            max-width: 100%;
             height: auto;
-            margin: 10px 0;
         }
-
-        /* 移动端背景 */
-        @media (max-width: 768px) {
-            body {
-                background-image: url('https://t.mwm.moe/mp');
-                background-size: cover;
-                background-position: center;
-            }
+        .rss-item a {
+            color: #007BFF;
+            text-decoration: none;
         }
-
-        /* PC端背景 */
-        @media (min-width: 769px) {
-            body {
-                background-image: url('https://t.mwm.moe/pc');
-                background-size: cover;
-                background-position: center;
-            }
+        .rss-item a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>RSS Feed Viewer</h1>
-        <div id="feed"></div>
-    </div>
+    <div id="rss-container"></div>
+
     <script>
-        async function loadRSS() {
-            try {
-                const response = await fetch('/api/rss'); // Adjust this if your API endpoint is different
-                const data = await response.json();
+        // RSS feed URL
+        const rssFeedUrl = 'https://example.com/rss.xml';
 
-                const feedContainer = document.getElementById('feed');
-                if (data.error) {
-                    feedContainer.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
-                    return;
-                }
+        // Fetch and parse RSS feed
+        fetch(rssFeedUrl)
+            .then(response => response.text())
+            .then(data => {
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(data, "text/xml");
 
-                feedContainer.innerHTML = data.items.map(item => `
-                  <div class="feed-item">
-                    <div class="description">${item.description}</div>
-                    <time>${new Date(item.pubDate).toLocaleString()}</time>
-                    <div class="content">
-                        ${item.content}
-                    </div>
-                  </div>
-                `).join('');
-            } catch (err) {
-                console.error('Failed to load RSS feed:', err);
-                document.getElementById('feed').innerHTML = '<p style="color: red;">Failed to load RSS feed.</p>';
-            }
-        }
+                // Extract RSS items
+                const items = xmlDoc.getElementsByTagName("item");
+                const container = document.getElementById("rss-container");
 
-        // Load RSS feed on page load
-        window.onload = loadRSS;
+                Array.from(items).forEach(item => {
+                    const title = item.getElementsByTagName("title")[0]?.textContent || "No Title";
+                    const description = item.getElementsByTagName("description")[0]?.textContent || "No Description";
+                    const link = item.getElementsByTagName("link")[0]?.textContent || "#";
+                    const pubDate = new Date(item.getElementsByTagName("pubDate")[0]?.textContent).toLocaleString();
+                    const image = description.match(/<img.*?src="(.*?)".*?>/)?.[1];
+
+                    // Create item container
+                    const div = document.createElement("div");
+                    div.className = "rss-item";
+
+                    // Render item content
+                    div.innerHTML = `
+                        <h3><a href="${link}" target="_blank">${title}</a></h3>
+                        <p>${description.replace(/<img.*?>/, '')}</p>
+                        ${image ? `<img src="${image}" alt="Image">` : ""}
+                        <p><small>Published on: ${pubDate}</small></p>
+                    `;
+                    container.appendChild(div);
+                });
+            })
+            .catch(err => console.error("Error fetching RSS feed:", err));
     </script>
 </body>
 </html>
