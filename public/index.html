@@ -18,6 +18,7 @@
             justify-content: center;
             align-items: center;
             transition: background 0.5s ease-in-out;
+            background-attachment: fixed; /* 背景固定 */
         }
 
         .container {
@@ -27,6 +28,8 @@
             padding: 20px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
+            margin-top: 20px; /* 上方留空 */
+            margin-bottom: 20px; /* 下方留空 */
         }
 
         h1 {
@@ -38,35 +41,36 @@
             margin-bottom: 20px;
             border-bottom: 1px solid #ddd;
             padding-bottom: 10px;
+            padding-top: 10px; /* 上下留空 */
         }
 
-            .feed-item:last-child {
-                border-bottom: none;
-            }
+        .feed-item:last-child {
+            border-bottom: none;
+        }
 
-            .feed-item h2 {
-                margin: 0;
-                font-size: 1.2em;
-                color: #0073e6;
-            }
+        .feed-item h2 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #0073e6;
+        }
 
-                .feed-item h2 a {
-                    text-decoration: none;
-                }
+        .feed-item h2 a {
+            text-decoration: none;
+        }
 
-                    .feed-item h2 a:hover {
-                        text-decoration: underline;
-                    }
+        .feed-item h2 a:hover {
+            text-decoration: underline;
+        }
 
-            .feed-item p {
-                margin: 5px 0;
-                color: #555;
-            }
+        .feed-item p {
+            margin: 5px 0;
+            color: #555;
+        }
 
-            .feed-item time {
-                font-size: 0.9em;
-                color: #999;
-            }
+        .feed-item time {
+            font-size: 0.9em;
+            color: #999;
+        }
 
         /* 移动端背景 */
         @media (max-width: 768px) {
@@ -105,12 +109,12 @@
                 }
 
                 feedContainer.innerHTML = data.items.map(item => `
-              <div class="feed-item">
-                <h2><a href="${item.link}" target="_blank" rel="noopener noreferrer">${item.title}</a></h2>
-                <time>${new Date(item.pubDate).toLocaleString()}</time>
-                <p>${item.content}</p>
-              </div>
-            `).join('');
+                  <div class="feed-item">
+                    <h2><a href="${item.link}" target="_blank" rel="noopener noreferrer">${item.title}</a></h2>
+                    <time>${new Date(item.pubDate).toLocaleString()}</time>
+                    <p>${item.content}</p>
+                  </div>
+                `).join('');
             } catch (err) {
                 console.error('Failed to load RSS feed:', err);
                 document.getElementById('feed').innerHTML = '<p style="color: red;">Failed to load RSS feed.</p>';
