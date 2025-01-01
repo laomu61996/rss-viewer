@@ -5,145 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RSS Feed Viewer</title>
     <style>
-        /* 基本样式 */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #f9f9f9;
             color: #333;
-            height: 100vh;
-            background-attachment: fixed; /* 背景固定 */
-            box-sizing: border-box; /* 让所有元素的边距和内边距都包含在内 */
         }
-
-        * {
-            box-sizing: border-box;
-        }
-
         .container {
-            width: 100%;
-            max-width: 900px; /* 容器最大宽度 */
-            margin: 20px auto; /* 垂直留空 */
-            background: rgba(255, 255, 255, 0.9); /* 半透明背景 */
+            max-width: 800px;
+            margin: 20px auto;
             padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
         }
-
-        h1 {
-            text-align: center;
-            color: #333;
+        .rss-item {
             margin-bottom: 20px;
-        }
-
-        .feed-item {
-            margin-bottom: 30px; /* 增加底部间距 */
+            padding: 10px;
             border-bottom: 1px solid #ddd;
-            padding: 15px 0; /* 上下内边距增加 */
         }
-
-        .feed-item:last-child {
+        .rss-item:last-child {
             border-bottom: none;
         }
-
-        .feed-item h2 {
-            margin: 0;
-            font-size: 1.4em; /* 增大标题字体 */
-            color: #0073e6;
-        }
-
-        .feed-item h2 a {
-            text-decoration: none;
-        }
-
-        .feed-item h2 a:hover {
-            text-decoration: underline;
-        }
-
-        .feed-item p {
-            margin: 10px 0;
-            line-height: 1.6; /* 增加行间距 */
-            color: #555;
-        }
-
-        .feed-item time {
-            font-size: 0.9em;
-            color: #999;
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        /* 图片样式 */
-        .feed-item img {
-            max-width: 100%; /* 图片自适应容器宽度 */
+        .rss-item img {
+            max-width: 100%;
             height: auto;
-            margin: 10px 0;
+            margin-top: 10px;
         }
-
-        /* 链接样式 */
-        .feed-item a {
-            color: #0073e6;
+        .rss-item a {
+            color: #007bff;
             text-decoration: none;
         }
-
-        .feed-item a:hover {
+        .rss-item a:hover {
             text-decoration: underline;
-        }
-
-        /* 移动端背景 */
-        @media (max-width: 768px) {
-            body {
-                background-image: url('https://t.mwm.moe/mp');
-                background-size: cover;
-                background-position: center;
-            }
-        }
-
-        /* PC端背景 */
-        @media (min-width: 769px) {
-            body {
-                background-image: url('https://t.mwm.moe/pc');
-                background-size: cover;
-                background-position: center;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>RSS Feed Viewer</h1>
-        <div id="feed"></div>
+        <h1>RSS Feed Content</h1>
+        <div id="rss-container">
+            <!-- RSS内容将被动态加载到这里 -->
+        </div>
     </div>
+
     <script>
-        async function loadRSS() {
-            try {
-                const response = await fetch('/api/rss'); // Adjust this if your API endpoint is different
-                const data = await response.json();
-
-                const feedContainer = document.getElementById('feed');
-                if (data.error) {
-                    feedContainer.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
-                    return;
-                }
-
-                feedContainer.innerHTML = data.items.map(item => `
-                  <div class="feed-item">
-                    <h2><a href="${item.link}" target="_blank" rel="noopener noreferrer">${item.title}</a></h2>
-                    <time>${new Date(item.pubDate).toLocaleString()}</time>
-                    <div class="content">
-                        <p>${item.content}</p>
-                    </div>
-                  </div>
-                `).join('');
-            } catch (err) {
-                console.error('Failed to load RSS feed:', err);
-                document.getElementById('feed').innerHTML = '<p style="color: red;">Failed to load RSS feed.</p>';
-            }
-        }
-
-        // Load RSS feed on page load
-        window.onload = loadRSS;
+        document.addEventListener("DOMContentLoaded", function () {
+            // 获取 RSS 数据的请求
+            fetch('/api/rss.js')
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById("rss-container");
+                    data.items.forEach(item => {
+                        const div = document.createElement("div");
+                        div.className = "rss-item";
+                        
+                        // 提取并显示description中的内容
+                        div.innerHTML = `
+                            <h2>${item.description}</h2>
+                            <p><a href="${item.link}" target="_blank">阅读全文</a></p>
+                            ${item.image ? `<img src="${item.image}" width="250" />` : ''}
+                        `;
+                        container.appendChild(div);
+                    });
+                })
+                .catch(error => console.error("Error loading RSS feed:", error));
+        });
     </script>
 </body>
 </html>
