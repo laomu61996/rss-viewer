@@ -1,1 +1,30 @@
+{
+  "name": "rss-feed-viewer",
+  "version": "1.0.0",
+  "description": "A simple RSS Feed Viewer deployed on Vercel",
+  "main": "index.html",
+  "scripts": {
+    "start": "node server.js", 
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "rss-parser": "^3.0.0"  // 最新版本的RSS解析库
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": "20"  // 推荐使用 Node.js 16.x 版本（Vercel支持）
+  },
+  "keywords": [
+    "rss",
+    "feed",
+    "viewer",
+    "vercel"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/laomu61996/rss-viewer"
+  }
+}
 
