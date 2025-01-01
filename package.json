@@ -8,11 +8,11 @@
     "deploy": "vercel --prod"
   },
   "dependencies": {
-    "rss-parser": "^3.0.0"  // 最新版本的RSS解析库
+    "rss-parser": "^3.0.0"
   },
   "devDependencies": {},
   "engines": {
-    "node": "20"  // 推荐使用 Node.js 16.x 版本（Vercel支持）
+    "node": "20"
   },
   "keywords": [
     "rss",
