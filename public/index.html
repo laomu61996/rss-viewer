@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RSS Feed Viewer</title>
     <style>
         /* 基本样式 */
         body {
@@ -35,22 +34,26 @@
             text-align: center;
             color: #333;
             margin-bottom: 20px;
+            font-size: 2em; /* 增大标题 */
         }
 
         .feed-item {
             margin-bottom: 30px; /* 增加底部间距 */
-            border-bottom: 1px solid #ddd;
-            padding: 15px 0; /* 上下内边距增加 */
+            padding: 20px;
+            border-radius: 8px; /* 圆角边框 */
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 增加阴影 */
         }
 
-        .feed-item:last-child {
-            border-bottom: none;
+        .feed-item:hover {
+            background-color: #f0f0f0; /* 悬停时背景色变亮 */
         }
 
         .feed-item h2 {
             margin: 0;
-            font-size: 1.4em; /* 增大标题字体 */
+            font-size: 1.6em; /* 增大标题字体 */
             color: #0073e6;
+            font-weight: bold; /* 加粗 */
         }
 
         .feed-item h2 a {
@@ -61,24 +64,25 @@
             text-decoration: underline;
         }
 
-        .feed-item p {
-            margin: 10px 0;
-            line-height: 1.6; /* 增加行间距 */
-            color: #555;
-        }
-
         .feed-item time {
-            font-size: 0.9em;
-            color: #999;
+            font-size: 1em;
+            color: #777;
             display: block;
             margin-bottom: 10px;
+        }
+
+        .feed-item p {
+            margin: 10px 0;
+            line-height: 1.8; /* 增加行间距 */
+            color: #555;
         }
 
         /* 图片样式 */
         .feed-item img {
             max-width: 100%; /* 图片自适应容器宽度 */
             height: auto;
-            margin: 10px 0;
+            margin: 15px 0;
+            border-radius: 8px; /* 图片圆角 */
         }
 
         /* 链接样式 */
@@ -134,6 +138,7 @@
                     <div class="content">
                         <p>${item.content}</p>
                     </div>
+                    ${item.image ? `<img src="${item.image}" alt="Feed image">` : ''}
                   </div>
                 `).join('');
             } catch (err) {
