@@ -132,16 +132,33 @@
                     return;
                 }
 
-                feedContainer.innerHTML = data.items.map(item => `
-                  <div class="feed-item">
-                    <h2><a href="${item.link}" target="_blank" rel="noopener noreferrer">${item.description ? item.description.match(/<b>(.*?)<\/b>/)[1] : "No Title"}</a></h2>
-                    <time>${new Date(item.pubDate).toLocaleString()}</time>
-                    <div class="content">
-                        <p>${item.description ? item.description.replace(/<p>|<\/p>/g, "").replace(/<br>/g, "\n") : "No description available"}</p>
-                    </div>
-                    ${item.image ? `<img src="${item.image}" alt="Feed image">` : ''}
-                  </div>
-                `).join('');
+                feedContainer.innerHTML = data.items.map(item => {
+                    // Extract the title from <description>
+                    const titleMatch = item.description.match(/<b>(.*?)<\/b>/);
+                    const title = titleMatch ? titleMatch[1] : "No Title";
+
+                    // Clean up description content
+                    const description = item.description.replace(/<p>|<\/p>|<br>/g, "").trim();
+
+                    // Add image and links to description
+                    const image = item.image ? `<img src="${item.image}" alt="Feed image">` : '';
+                    const links = `
+                        <p><a href="${item.link}" target="_blank" rel="noopener noreferrer">Read more</a></p>
+                        <p><a href="${item.link}" target="_blank" rel="noopener noreferrer">Visit the page</a></p>
+                    `;
+
+                    return `
+                        <div class="feed-item">
+                            <h2><a href="${item.link}" target="_blank" rel="noopener noreferrer">${title}</a></h2>
+                            <time>${new Date(item.pubDate).toLocaleString()}</time>
+                            <div class="content">
+                                <p>${description}</p>
+                            </div>
+                            ${image}
+                            ${links}
+                        </div>
+                    `;
+                }).join('');
             } catch (err) {
                 console.error('Failed to load RSS feed:', err);
                 document.getElementById('feed').innerHTML = '<p style="color: red;">Failed to load RSS feed.</p>';
