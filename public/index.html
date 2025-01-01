@@ -47,17 +47,19 @@
             border-bottom: none;
         }
 
-        .feed-item h2 {
+        .feed-item .description {
             margin: 0;
-            font-size: 1.4em; /* 增大标题字体 */
+            font-size: 1.2em; /* 增大标题字体 */
+            color: #333;
+            font-weight: bold;
+        }
+
+        .feed-item .description a {
+            text-decoration: none;
             color: #0073e6;
         }
 
-        .feed-item h2 a {
-            text-decoration: none;
-        }
-
-        .feed-item h2 a:hover {
+        .feed-item .description a:hover {
             text-decoration: underline;
         }
 
@@ -79,16 +81,6 @@
             max-width: 100%; /* 图片自适应容器宽度 */
             height: auto;
             margin: 10px 0;
-        }
-
-        /* 链接样式 */
-        .feed-item a {
-            color: #0073e6;
-            text-decoration: none;
-        }
-
-        .feed-item a:hover {
-            text-decoration: underline;
         }
 
         /* 移动端背景 */
@@ -129,10 +121,10 @@
 
                 feedContainer.innerHTML = data.items.map(item => `
                   <div class="feed-item">
-                    <h2><a href="${item.link}" target="_blank" rel="noopener noreferrer">${item.title}</a></h2>
+                    <div class="description">${item.description}</div>
                     <time>${new Date(item.pubDate).toLocaleString()}</time>
                     <div class="content">
-                        <p>${item.content}</p>
+                        ${item.content}
                     </div>
                   </div>
                 `).join('');
