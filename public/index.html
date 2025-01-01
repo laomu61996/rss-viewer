@@ -25,7 +25,7 @@
             width: 100%;
             max-width: 900px; /* 容器最大宽度 */
             margin: 20px auto; /* 垂直留空 */
-            background: rgba(255, 255, 255, 0.8); /* 半透明背景 */
+            background: rgba(255, 255, 255, 0.9); /* 半透明背景 */
             padding: 20px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
@@ -38,9 +38,9 @@
         }
 
         .feed-item {
-            margin-bottom: 20px;
+            margin-bottom: 30px; /* 增加底部间距 */
             border-bottom: 1px solid #ddd;
-            padding: 10px 0; /* 上下留空 */
+            padding: 15px 0; /* 上下内边距增加 */
         }
 
         .feed-item:last-child {
@@ -49,7 +49,7 @@
 
         .feed-item h2 {
             margin: 0;
-            font-size: 1.2em;
+            font-size: 1.4em; /* 增大标题字体 */
             color: #0073e6;
         }
 
@@ -62,13 +62,33 @@
         }
 
         .feed-item p {
-            margin: 5px 0;
+            margin: 10px 0;
+            line-height: 1.6; /* 增加行间距 */
             color: #555;
         }
 
         .feed-item time {
             font-size: 0.9em;
             color: #999;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        /* 图片样式 */
+        .feed-item img {
+            max-width: 100%; /* 图片自适应容器宽度 */
+            height: auto;
+            margin: 10px 0;
+        }
+
+        /* 链接样式 */
+        .feed-item a {
+            color: #0073e6;
+            text-decoration: none;
+        }
+
+        .feed-item a:hover {
+            text-decoration: underline;
         }
 
         /* 移动端背景 */
@@ -111,7 +131,9 @@
                   <div class="feed-item">
                     <h2><a href="${item.link}" target="_blank" rel="noopener noreferrer">${item.title}</a></h2>
                     <time>${new Date(item.pubDate).toLocaleString()}</time>
-                    <p>${item.content}</p>
+                    <div class="content">
+                        <p>${item.content}</p>
+                    </div>
                   </div>
                 `).join('');
             } catch (err) {
