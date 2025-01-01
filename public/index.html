@@ -13,11 +13,6 @@
             background-color: #f4f4f4;
             color: #333;
             height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: background 0.5s ease-in-out;
             background-attachment: fixed; /* 背景固定 */
             box-sizing: border-box; /* 让所有元素的边距和内边距都包含在内 */
         }
@@ -28,13 +23,12 @@
 
         .container {
             width: 100%;
-            max-width: 800px;
+            max-width: 900px; /* 容器最大宽度 */
+            margin: 20px auto; /* 垂直留空 */
             background: rgba(255, 255, 255, 0.8); /* 半透明背景 */
             padding: 20px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
-            margin-top: 20px; /* 上方留空 */
-            margin-bottom: 20px; /* 下方留空 */
         }
 
         h1 {
